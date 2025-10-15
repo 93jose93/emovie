@@ -8,6 +8,7 @@ class MovieRemoteDatasourceProvider extends ChangeNotifier {
   List<ResultUpcoming> upcomingMovies = [];
   List<ResultTrending> trendingMovies = [];
   List<ResultRecommended> recommendedMovies = [];
+  List<ResultRecommended> filteredRecommendedMovies = [];
 
   String? errorMessage;
   bool isLoadingUpcoming = false;
@@ -72,7 +73,8 @@ class MovieRemoteDatasourceProvider extends ChangeNotifier {
       final model = RecommendationsModel.fromJson(json);
 
       if (model.results.isNotEmpty) {
-        recommendedMovies = model.results.take(6).toList(); // solo 6
+        recommendedMovies = model.results; // ✅ guarda todos los resultados
+        applyRecommendationFilters(); // ✅ aplica filtros (sin criterios al inicio)
         errorMessage = null;
       } else {
         errorMessage = 'No se encontraron recomendaciones.';
@@ -83,5 +85,22 @@ class MovieRemoteDatasourceProvider extends ChangeNotifier {
       isLoadingRecommended = false;
       notifyListeners();
     }
+  }
+
+  void applyRecommendationFilters({
+    String? language,
+    int? year,
+  }) {
+    filteredRecommendedMovies = recommendedMovies
+        .where((movie) {
+          final matchesLanguage =
+              language == null || movie.originalLanguage == language;
+          final matchesYear = year == null || movie.releaseDate?.year == year;
+          return matchesLanguage && matchesYear;
+        })
+        .take(6) // ✅ limita después del filtro
+        .toList();
+
+    notifyListeners();
   }
 }

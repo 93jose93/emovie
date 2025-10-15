@@ -13,102 +13,129 @@ class RecommendedSectionWidget extends StatefulWidget {
 }
 
 class _RecommendedSectionWidgetState extends State<RecommendedSectionWidget> {
-  bool isSpanishSelected = false;
-  bool isYear1993Selected = false;
+  bool isPortugueseSelected = false;
+  bool isYearSelected = false;
 
-  void toggleSpanish() {
+  void togglePortuguese() {
     setState(() {
-      isSpanishSelected = !isSpanishSelected;
+      isPortugueseSelected = !isPortugueseSelected;
     });
+    applyFilters();
   }
 
-  void toggleYear1993() {
+  void toggleYear() {
     setState(() {
-      isYear1993Selected = !isYear1993Selected;
+      isYearSelected = !isYearSelected;
     });
+    applyFilters();
+  }
+
+  void applyFilters() {
+    final provider = context.read<MovieRemoteDatasourceProvider>();
+    provider.applyRecommendationFilters(
+      language: isPortugueseSelected ? 'pt' : null,
+      year: isYearSelected ? 2012 : null,
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     final provider = context.watch<MovieRemoteDatasourceProvider>();
-    final movies = provider.recommendedMovies;
+    final movies = provider.filteredRecommendedMovies;
 
     const titleColor = Colors.white;
     const subtitleColor = Colors.white70;
 
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        const Text(
-          'Recomendados para ti',
-          style: TextStyle(
-            color: titleColor,
-            fontSize: 20,
-            fontWeight: FontWeight.bold,
+    return SingleChildScrollView(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Text(
+            'Recomendados para ti',
+            style: TextStyle(
+              color: titleColor,
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+            ),
           ),
-        ),
-        const SizedBox(height: 12),
-        Row(
-          children: [
-            FilterToggleButton(
-              label: 'En español',
-              selected: isSpanishSelected,
-              onTap: toggleSpanish,
-            ),
-            const SizedBox(width: 12),
-            FilterToggleButton(
-              label: 'Lanzadas en 1993',
-              selected: isYear1993Selected,
-              onTap: toggleYear1993,
-            ),
-          ],
-        ),
-        const SizedBox(height: 16),
-        provider.isLoadingRecommended
-            ? const Center(child: CircularProgressIndicator())
-            : GridView.builder(
-                shrinkWrap: true,
-                physics: const NeverScrollableScrollPhysics(),
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 3,
-                  mainAxisSpacing: 12,
-                  crossAxisSpacing: 12,
-                  childAspectRatio: 0.7,
-                ),
-                itemCount: movies.length,
-                itemBuilder: (context, index) {
-                  final ResultRecommended movie = movies[index];
-                  final posterUrl = movie.posterPath != null
-                      ? 'https://image.tmdb.org/t/p/w500${movie.posterPath}'
-                      : null;
-
-                  return Container(
-                    decoration: BoxDecoration(
-                      color: Colors.grey.shade800,
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    child: posterUrl != null
-                        ? ClipRRect(
-                            borderRadius: BorderRadius.circular(8),
-                            child: Image.network(
-                              posterUrl,
-                              fit: BoxFit.cover,
-                            ),
-                          )
-                        : Center(
-                            child: Text(
-                              movie.title ?? 'Sin título',
-                              style: const TextStyle(
-                                color: subtitleColor,
-                                fontSize: 12,
-                              ),
-                              textAlign: TextAlign.center,
-                            ),
-                          ),
-                  );
-                },
+          const SizedBox(height: 12),
+          Row(
+            children: [
+              FilterToggleButton(
+                label: 'En portugués',
+                selected: isPortugueseSelected,
+                onTap: togglePortuguese,
               ),
-      ],
+              const SizedBox(width: 12),
+              FilterToggleButton(
+                label: 'Lanzadas en 2012',
+                selected: isYearSelected,
+                onTap: toggleYear,
+              ),
+            ],
+          ),
+          const SizedBox(height: 16),
+          provider.isLoadingRecommended
+              ? const Center(child: CircularProgressIndicator())
+              : movies.isEmpty
+                  ? Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 100),
+                      child: Center(
+                        child: Text(
+                          'No hay coincidencias con los filtros',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 16,
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                    )
+                  : GridView.builder(
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      gridDelegate:
+                          const SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 3,
+                        mainAxisSpacing: 12,
+                        crossAxisSpacing: 12,
+                        childAspectRatio: 0.7,
+                      ),
+                      itemCount: movies.length,
+                      itemBuilder: (context, index) {
+                        final ResultRecommended movie = movies[index];
+                        final posterUrl = movie.posterPath != null
+                            ? 'https://image.tmdb.org/t/p/w500${movie.posterPath}'
+                            : null;
+
+                        return Container(
+                          decoration: BoxDecoration(
+                            color: Colors.grey.shade800,
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          child: posterUrl != null
+                              ? ClipRRect(
+                                  borderRadius: BorderRadius.circular(8),
+                                  child: Image.network(
+                                    posterUrl,
+                                    fit: BoxFit.cover,
+                                  ),
+                                )
+                              : Center(
+                                  child: Text(
+                                    movie.title ?? 'Sin título',
+                                    style: const TextStyle(
+                                      color: subtitleColor,
+                                      fontSize: 12,
+                                    ),
+                                    textAlign: TextAlign.center,
+                                  ),
+                                ),
+                        );
+                      },
+                    ),
+        ],
+      ),
     );
   }
 }
