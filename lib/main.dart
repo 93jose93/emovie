@@ -1,9 +1,11 @@
+import 'package:animated_splash_screen/animated_splash_screen.dart';
 import 'package:emovie/core/network/api_base.dart';
 import 'package:emovie/core/storage/local_storage.dart';
 import 'package:emovie/routes/routes_imports.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_web_plugins/url_strategy.dart';
+import 'package:page_transition/page_transition.dart';
 import 'package:provider/provider.dart';
 
 late final AppRouter appRouter;
@@ -20,17 +22,12 @@ Future<void> main() async {
   await LocalStorage.configurePrefs();
   ApiBase.configureDio();
 
-  // 🔹 Instancias base
-  // final moviesRemoteDatasource = MoviesRemoteDatasource();
-  // final moviesProvider = MoviesProvider(moviesRemoteDatasource);
-
   // 🔹 Router con dependencias
   appRouter = AppRouter();
 
   runApp(
     MultiProvider(
       providers: [
-        //ChangeNotifierProvider(create: (_) => moviesProvider),
         Provider<int>.value(value: 0),
       ],
       child: const MyApp(),
@@ -46,6 +43,45 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      title: 'TMDb Flutter App',
+      home: AnimatedSplashScreen(
+        splashIconSize:
+            double.infinity, // 🔥 fuerza el splash a ocupar toda la pantalla
+        splash: Container(
+          width: double.infinity,
+          height: double.infinity,
+          decoration: const BoxDecoration(
+            gradient: LinearGradient(
+              colors: [Colors.black, Color(0xFF780606)],
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+            ),
+          ),
+          child: Center(
+            child: Image.asset(
+              "assets/images/company/logo.png",
+              width: 150,
+              height: 150,
+            ),
+          ),
+        ),
+        nextScreen: const AppRouterWrapper(),
+        splashTransition: SplashTransition.fadeTransition,
+        pageTransitionType: PageTransitionType.fade,
+        duration: 2500,
+      ),
+    );
+  }
+}
+
+/// Este widget envuelve tu router para usar con AnimatedSplashScreen
+class AppRouterWrapper extends StatelessWidget {
+  const AppRouterWrapper({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp.router(
