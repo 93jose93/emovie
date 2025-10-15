@@ -15,7 +15,7 @@ class TrendingWeekModel {
   });
 
   final int? page;
-  final List<Result> results;
+  final List<ResultTrending> results;
   final int? totalPages;
   final int? totalResults;
 
@@ -24,7 +24,8 @@ class TrendingWeekModel {
       page: json["page"],
       results: json["results"] == null
           ? []
-          : List<Result>.from(json["results"].map((x) => Result.fromJson(x))),
+          : List<ResultTrending>.from(
+              json["results"].map((x) => ResultTrending.fromJson(x))),
       totalPages: json["total_pages"],
       totalResults: json["total_results"],
     );
@@ -43,8 +44,8 @@ class TrendingWeekModel {
   }
 }
 
-class Result {
-  Result({
+class ResultTrending {
+  ResultTrending({
     required this.adult,
     required this.backdropPath,
     required this.id,
@@ -78,8 +79,8 @@ class Result {
   final double? voteAverage;
   final int? voteCount;
 
-  factory Result.fromJson(Map<String, dynamic> json) {
-    return Result(
+  factory ResultTrending.fromJson(Map<String, dynamic> json) {
+    return ResultTrending(
       adult: json["adult"],
       backdropPath: json["backdrop_path"],
       id: json["id"],

@@ -2,6 +2,7 @@ import 'package:animated_splash_screen/animated_splash_screen.dart';
 import 'package:emovie/core/network/api_base.dart';
 import 'package:emovie/core/storage/local_storage.dart';
 import 'package:emovie/core/theme/splash_content.dart';
+import 'package:emovie/modules/movies/data/datasources/movie_remote_datasource_provider.dart';
 import 'package:emovie/routes/routes_imports.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -29,7 +30,13 @@ Future<void> main() async {
   runApp(
     MultiProvider(
       providers: [
-        Provider<int>.value(value: 0),
+        // Provider<int>.value(value: 0),
+        ChangeNotifierProvider(
+          create: (_) => MovieRemoteDatasourceProvider()
+            ..getUpcomingMovies()
+            ..getTrendingMovies()
+            ..getRecommendedMovies(),
+        ),
       ],
       child: const MyApp(),
     ),

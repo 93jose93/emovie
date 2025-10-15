@@ -16,7 +16,7 @@ class UpcomingModel {
 
   final Dates? dates;
   final int? page;
-  final List<Result> results;
+  final List<ResultUpcoming> results;
   final int? totalPages;
   final int? totalResults;
 
@@ -26,7 +26,8 @@ class UpcomingModel {
       page: json["page"],
       results: json["results"] == null
           ? []
-          : List<Result>.from(json["results"].map((x) => Result.fromJson(x))),
+          : List<ResultUpcoming>.from(
+              json["results"].map((x) => ResultUpcoming.fromJson(x))),
       totalPages: json["total_pages"],
       totalResults: json["total_results"],
     );
@@ -73,8 +74,8 @@ class Dates {
   }
 }
 
-class Result {
-  Result({
+class ResultUpcoming {
+  ResultUpcoming({
     required this.adult,
     required this.backdropPath,
     required this.genreIds,
@@ -106,8 +107,8 @@ class Result {
   final double? voteAverage;
   final int? voteCount;
 
-  factory Result.fromJson(Map<String, dynamic> json) {
-    return Result(
+  factory ResultUpcoming.fromJson(Map<String, dynamic> json) {
+    return ResultUpcoming(
       adult: json["adult"],
       backdropPath: json["backdrop_path"],
       genreIds: json["genre_ids"] == null

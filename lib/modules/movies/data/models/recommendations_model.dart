@@ -15,7 +15,7 @@ class RecommendationsModel {
   });
 
   final int? page;
-  final List<Result> results;
+  final List<ResultRecommended> results;
   final int? totalPages;
   final int? totalResults;
 
@@ -24,7 +24,8 @@ class RecommendationsModel {
       page: json["page"],
       results: json["results"] == null
           ? []
-          : List<Result>.from(json["results"].map((x) => Result.fromJson(x))),
+          : List<ResultRecommended>.from(
+              json["results"].map((x) => ResultRecommended.fromJson(x))),
       totalPages: json["total_pages"],
       totalResults: json["total_results"],
     );
@@ -43,8 +44,8 @@ class RecommendationsModel {
   }
 }
 
-class Result {
-  Result({
+class ResultRecommended {
+  ResultRecommended({
     required this.adult,
     required this.backdropPath,
     required this.id,
@@ -78,8 +79,8 @@ class Result {
   final double? voteAverage;
   final int? voteCount;
 
-  factory Result.fromJson(Map<String, dynamic> json) {
-    return Result(
+  factory ResultRecommended.fromJson(Map<String, dynamic> json) {
+    return ResultRecommended(
       adult: json["adult"],
       backdropPath: json["backdrop_path"],
       id: json["id"],

@@ -34,10 +34,10 @@ class ApiBase {
       final resp = await _dio.get(endpoint, queryParameters: queryParameters);
       return resp.data;
     } on DioException catch (e) {
-      print('[API ERROR GET] ${e.message}');
+      // print('[API ERROR GET] ${e.message}');
       if (e.response != null) {
-        print('Status: ${e.response?.statusCode}');
-        print('Response: ${e.response?.data}');
+        //  print('Status: ${e.response?.statusCode}');
+        //  print('Response: ${e.response?.data}');
       }
       rethrow; // evita el warning y mantiene el stack trace original
     }
@@ -51,10 +51,10 @@ class ApiBase {
       final resp = await _dio.post(endpoint, data: data);
       return resp.data;
     } on DioException catch (e) {
-      print('[API ERROR POST] ${e.message}');
+      // print('[API ERROR POST] ${e.message}');
       if (e.response != null) {
-        print('Status: ${e.response?.statusCode}');
-        print('Response: ${e.response?.data}');
+        //  print('Status: ${e.response?.statusCode}');
+        //  print('Response: ${e.response?.data}');
       }
       rethrow;
     }
