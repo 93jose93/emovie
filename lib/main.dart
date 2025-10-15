@@ -1,6 +1,7 @@
 import 'package:animated_splash_screen/animated_splash_screen.dart';
 import 'package:emovie/core/network/api_base.dart';
 import 'package:emovie/core/storage/local_storage.dart';
+import 'package:emovie/core/theme/splash_content.dart';
 import 'package:emovie/routes/routes_imports.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -47,28 +48,10 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'TMDb Flutter App',
+      title: 'eMovie',
       home: AnimatedSplashScreen(
-        splashIconSize:
-            double.infinity, // 🔥 fuerza el splash a ocupar toda la pantalla
-        splash: Container(
-          width: double.infinity,
-          height: double.infinity,
-          decoration: const BoxDecoration(
-            gradient: LinearGradient(
-              colors: [Colors.black, Color(0xFF780606)],
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter,
-            ),
-          ),
-          child: Center(
-            child: Image.asset(
-              "assets/images/company/logo.png",
-              width: 150,
-              height: 150,
-            ),
-          ),
-        ),
+        splashIconSize: double.infinity,
+        splash: const SplashContent(),
         nextScreen: const AppRouterWrapper(),
         splashTransition: SplashTransition.fadeTransition,
         pageTransitionType: PageTransitionType.fade,

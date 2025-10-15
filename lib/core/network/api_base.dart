@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:emovie/core/constants/app_config.dart';
 
 class ApiBase {
   static final Dio _dio = Dio();
@@ -6,15 +7,9 @@ class ApiBase {
   /// Cambiar esto cuando publiques
   static const bool isProduction = false;
 
-  /// Base URL de TMDb
-  static const String tmdbBaseUrl = 'https://api.themoviedb.org/3';
-
-  /// Token de lectura (Bearer) de TMDb / llave de API
-  static const String tmdbApiReadToken = 'TU_TOKEN_DE_LECTURA_AQUI';
-
   /// Inicializa configuración (baseUrl + headers)
   static Future<void> configureDio() async {
-    _dio.options.baseUrl = tmdbBaseUrl;
+    _dio.options.baseUrl = AppConfig.tmdbBaseUrl;
 
     await _updateAuthorizationHeader();
   }
@@ -26,7 +21,7 @@ class ApiBase {
     final headers = <String, String>{
       'Content-Type': 'application/json;charset=utf-8',
       'Accept': 'application/json',
-      'Authorization': 'Bearer $tmdbApiReadToken',
+      'Authorization': 'Bearer ${AppConfig.tmdbApiReadToken}',
     };
     _dio.options.headers = headers;
   }
