@@ -1,4 +1,5 @@
 import 'package:emovie/core/network/api_base.dart';
+import 'package:emovie/modules/movies/data/models/detail_movie_model.dart';
 import 'package:emovie/modules/movies/data/models/recommendations_model.dart';
 import 'package:emovie/modules/movies/data/models/trending_week_model.dart';
 import 'package:emovie/modules/movies/data/models/upcoming_model.dart';
@@ -10,10 +11,15 @@ class MovieRemoteDatasourceProvider extends ChangeNotifier {
   List<ResultRecommended> recommendedMovies = [];
   List<ResultRecommended> filteredRecommendedMovies = [];
 
+  DetailMovieModel? selectedMovieDetail;
+  String? detailErrorMessage;
+  String? trailerKey;
+
   String? errorMessage;
   bool isLoadingUpcoming = false;
   bool isLoadingTrending = false;
   bool isLoadingRecommended = false;
+  bool isLoadingDetail = false;
 
   MovieRemoteDatasourceProvider();
 
@@ -102,5 +108,41 @@ class MovieRemoteDatasourceProvider extends ChangeNotifier {
         .toList();
 
     notifyListeners();
+  }
+
+  Future<void> getMovieDetail(int movieId) async {
+    try {
+      isLoadingDetail = true;
+      notifyListeners();
+
+      final json = await ApiBase.get('/movie/$movieId');
+      selectedMovieDetail = DetailMovieModel.fromJson(json);
+      detailErrorMessage = null;
+    } catch (e) {
+      detailErrorMessage = 'Error al cargar detalles de la película.';
+      selectedMovieDetail = null;
+    } finally {
+      isLoadingDetail = false;
+      notifyListeners();
+    }
+  }
+
+  Future<void> getMovieTrailer(int movieId) async {
+    try {
+      final json = await ApiBase.get('/movie/$movieId/videos');
+      final results = json['results'] as List<dynamic>;
+
+      final trailer = results.firstWhere(
+        (video) =>
+            video['site'] == 'YouTube' &&
+            video['type'] == 'Trailer' &&
+            video['key'] != null,
+        orElse: () => null,
+      );
+
+      trailerKey = trailer != null ? trailer['key'] as String : null;
+    } catch (e) {
+      trailerKey = null;
+    }
   }
 }
