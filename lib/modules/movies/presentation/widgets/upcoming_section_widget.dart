@@ -59,9 +59,13 @@ class UpcomingSectionWidget extends StatelessWidget {
                             child: posterUrl != null
                                 ? ClipRRect(
                                     borderRadius: BorderRadius.circular(8),
-                                    child: Image.network(
-                                      posterUrl,
+                                    child: FadeInImage.assetNetwork(
+                                      placeholder:
+                                          'assets/images/movie/placeholder.png',
+                                      image: posterUrl,
                                       fit: BoxFit.cover,
+                                      fadeInDuration:
+                                          const Duration(milliseconds: 300),
                                     ),
                                   )
                                 : Center(
