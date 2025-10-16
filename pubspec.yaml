@@ -28,21 +28,51 @@ environment:
 # the latest version available on pub.dev. To see which dependencies have newer
 # versions available, run `flutter pub outdated`.
 dependencies:
+  # 🎬 Pantalla de carga animada para el splash inicial
   animated_splash_screen: ^1.3.0
+
+  # 🧭 Sistema de rutas avanzado y declarativo
   auto_route: ^10.1.0+1
+
+  # ⚙️ Generador de código para AutoRoute (necesario para crear las rutas)
   auto_route_generator: ^10.0.1
+
+  # 🛠️ Herramienta para generar código (usada con AutoRoute, json_serializable, etc.)
   build_runner: ^2.4.15
+
+  # 🌐 Verificar el estado de la conexión a Internet (Wi-Fi, móvil, sin red, etc.)
   connectivity_plus: ^7.0.0
+
+  # 🍎 Íconos estilo iOS (usados en Cupertino widgets)
   cupertino_icons: ^1.0.8
+
+  # ⚡ Cliente HTTP potente para consumir APIs (como TMDb)
   dio: ^5.9.0
+
+  # 🧩 Framework principal de Flutter
   flutter:
     sdk: flutter
+
+  # 🚀 Personalizar y generar íconos del lanzador (app icon)
   flutter_launcher_icons: ^0.14.4
+
+  # 🌐 Permite registrar plugins web cuando se compila para web
   flutter_web_plugins:
     sdk: flutter
+
+  # 🧪 Librería para crear mocks en tests (para simular dependencias)
+  mocktail: ^1.0.4
+
+  # 🎞️ Animaciones suaves entre pantallas (transiciones personalizadas)
   page_transition: ^2.2.1
+
+  # 🧠 Manejo de estado basado en el patrón Provider
   provider: ^6.1.5+1
+
+  # 💾 Almacenamiento local simple tipo clave-valor (preferencias, tokens, etc.)
   shared_preferences: ^2.5.3
+
+  # 📺 Reproducir videos de YouTube dentro de la app
   youtube_player_flutter: ^9.1.3
 
 dev_dependencies:
