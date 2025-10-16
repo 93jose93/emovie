@@ -1,6 +1,5 @@
 import 'package:animated_splash_screen/animated_splash_screen.dart';
 import 'package:emovie/core/network/api_base.dart';
-import 'package:emovie/core/storage/local_storage.dart';
 import 'package:emovie/core/theme/splash_content.dart';
 import 'package:emovie/modules/movies/data/datasources/movie_remote_datasource_provider.dart';
 import 'package:emovie/routes/routes_imports.dart';
@@ -21,7 +20,6 @@ Future<void> main() async {
   }
 
   // Inicializaciones globales
-  await LocalStorage.configurePrefs();
   ApiBase.configureDio();
 
   // 🔹 Router con dependencias
