@@ -2,6 +2,8 @@
 
 Aplicación Flutter que consume contenido de películas desde la API pública de [The Movie Database (TMDb)](https://api.themoviedb.org). Permite explorar tendencias, próximos estrenos y recomendaciones personalizadas, con una arquitectura modular, escalable y preparada para funcionar sin conexión.
 
+📱 APK lista para decargar e instalar: https://lnkd.in/eufj3HdE
+
 ---
 
 ## 🚀 Funcionalidades principales
